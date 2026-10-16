@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tests · Student Finance Tracker</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 48rem; margin: 2rem auto; padding: 0 1rem; color: #17262b; }
+    li.pass::marker { content: "✔ "; color: #0b6e4f; }
+    li.fail::marker { content: "✘ "; color: #b3261e; }
+    li.fail { color: #b3261e; font-weight: 700; }
+    #summary { font-weight: 800; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Regex &amp; logic tests</h1>
+  <p id="summary" role="status">Running…</p>
+  <ul id="results"></ul>
+
+  <script type="module">
+    import { RULES, validateDescription, validateAmount, validateDate, validateCategory, validateRate, isRealDate } from './scripts/validators.js';
+    import { compileRegex, highlight, recordMatches } from './scripts/search.js';
+    import { sum, topCategory, last7Days, capStatus } from './scripts/stats.js';
+    import { importJSON } from './scripts/state.js';
+
+    let pass = 0, fail = 0;
+    const out = document.getElementById('results');
+    function test(name, fn) {
+      const li = document.createElement('li');
+      try {
+        const ok = fn();
+        if (ok !== true) throw new Error('assertion returned ' + ok);
+        li.className = 'pass'; pass++;
+      } catch (e) {
+        li.className = 'fail'; fail++;
+        name += ' — ' + e.message;
+      }
+      li.textContent = name;
+      out.append(li);
+    }
+
+    // Description
+    test('description: accepts "Lunch at cafeteria"', () => validateDescription('Lunch at cafeteria') === '');
+    test('description: rejects leading space', () => validateDescription(' Lunch') !== '');
+    test('description: rejects trailing space', () => validateDescription('Lunch ') !== '');
+    test('description: rejects double spaces', () => validateDescription('Lunch  at') !== '');
+    test('description: rejects empty', () => validateDescription('') !== '');
+
+    // Amount
+    for (const v of ['0', '12', '12.5', '12.50', '0.01', '99999.99']) test(`amount: accepts ${v}`, () => validateAmount(v) === '');
+    for (const v of ['', '-1', '01', '1.234', '1.', '.5', 'abc', '1,5']) test(`amount: rejects "${v}"`, () => validateAmount(v) !== '');
+
+    // Date
+    test('date: accepts 2026-10-12', () => validateDate('2026-10-12') === '');
+    test('date: accepts leap day 2024-02-29', () => validateDate('2024-02-29') === '');
+    test('date: rejects 2025-02-29 (not a leap year)', () => validateDate('2025-02-29') !== '');
+    test('date: rejects month 13', () => validateDate('2025-13-01') !== '');
+    test('date: rejects 2025-4-1 (format)', () => validateDate('2025-4-1') !== '');
+    test('date: isRealDate rejects 2025-04-31', () => isRealDate('2025-04-31') === false);
+
+    // Category
+    for (const v of ['Food', 'Fast food', 'Part-time work']) test(`category: accepts "${v}"`, () => validateCategory(v) === '');
+    for (const v of ['', 'Food2', ' Food', 'Food ', 'Food--Drink', 'Café']) test(`category: rejects "${v}"`, () => validateCategory(v) !== '');
+
+    // Advanced regex
+    test('back-reference: finds "the the"', () => RULES.duplicateWord.test('Bought the the book'));
+    test('back-reference: no false positive', () => !RULES.duplicateWord.test('Bought the other book'));
+    test('back-reference: validateDescription flags duplicates', () => validateDescription('tea tea') !== '');
+    test('lookahead: rate must contain a non-zero digit', () => RULES.rate.test('0.92') && !RULES.rate.test('0') && !RULES.rate.test('0.000'));
+    test('rate: validateRate accepts 1450', () => validateRate('1450') === '');
+
+    // Search
+    test('compileRegex: valid pattern compiles', () => compileRegex('(coffee|tea)') instanceof RegExp);
+    test('compileRegex: invalid pattern returns null', () => compileRegex('(unclosed') === null);
+    test('compileRegex: empty returns null', () => compileRegex('') === null);
+    test('highlight: wraps matches in <mark>', () => highlight('Coffee time', /coffee/i) === '<mark>Coffee</mark> time');
+    test('highlight: escapes HTML', () => highlight('<b>x</b>', /x/) === '&lt;b&gt;<mark>x</mark>&lt;/b&gt;');
+    test('highlight: null regex returns escaped text', () => highlight('a<b', null) === 'a&lt;b');
+    test('highlight: zero-length match does not hang', () => highlight('abc', /x*/g) === 'abc');
+    test('search: cents pattern /\\.\\d{2}\\b/ matches amount 89.99', () => recordMatches({ description: 'x', category: 'y', date: '2026-01-01', amount: 89.99 }, /\.\d{2}\b/));
+
+    // Stats
+    test('sum: avoids float drift (0.1 + 0.2)', () => sum([{ amount: 0.1 }, { amount: 0.2 }]) === 0.3);
+    test('topCategory: highest total wins', () => topCategory([{ category: 'A', amount: 5 }, { category: 'B', amount: 9 }, { category: 'A', amount: 3 }]).category === 'B');
+    test('topCategory: empty list gives null', () => topCategory([]) === null);
+    test('last7Days: returns 7 days ending today', () => { const d = last7Days([], '2026-10-12'); return d.length === 7 && d[0].date === '2026-10-06' && d[6].date === '2026-10-12'; });
+    test('last7Days: crosses month boundary', () => last7Days([], '2026-03-02')[0].date === '2026-02-24');
+    test('last7Days: sums same-day records', () => last7Days([{ date: '2026-10-12', amount: 1.1 }, { date: '2026-10-12', amount: 2.2 }], '2026-10-12')[6].total === 3.3);
+    test('capStatus: under cap', () => { const c = capStatus(40, 100); return c.enabled && !c.over && c.remaining === 60; });
+    test('capStatus: over cap', () => { const c = capStatus(130, 100); return c.over && c.remaining === -30; });
+    test('capStatus: 0 disables', () => capStatus(10, 0).enabled === false);
+
+    // Import validation (uses real state module; in-memory only after validation passes, so test failures only)
+    test('import: rejects non-JSON', () => importJSON('not json').ok === false);
+    test('import: rejects non-array', () => importJSON('{"a":1}').ok === false);
+    test('import: rejects bad record', () => importJSON('[{"id":"x"}]').ok === false);
+    test('import: rejects bad date', () => importJSON(JSON.stringify([{ id: 'a', description: 'Ok', amount: 1, category: 'Food', date: '2025-02-30', createdAt: 'x', updatedAt: 'x' }])).ok === false);
+    test('import: rejects duplicate ids', () => {
+      const r = { id: 'a', description: 'Ok', amount: 1, category: 'Food', date: '2025-01-01', createdAt: 'x', updatedAt: 'x' };
+      return importJSON(JSON.stringify([r, r])).ok === false;
+    });
+
+    document.getElementById('summary').textContent = `${pass} passed, ${fail} failed`;
+    document.title = (fail ? '✘ ' : '✔ ') + document.title;
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  {"id":"txn_0001","description":"Lunch at cafeteria","amount":12.50,"category":"Food","date":"2026-10-11","createdAt":"2026-10-11T12:30:00.000Z","updatedAt":"2026-10-11T12:30:00.000Z"},
+  {"id":"txn_0002","description":"Chemistry textbook","amount":89.99,"category":"Books","date":"2026-10-09","createdAt":"2026-10-09T09:00:00.000Z","updatedAt":"2026-10-09T09:00:00.000Z"},
+  {"id":"txn_0003","description":"Bus pass","amount":45.00,"category":"Transport","date":"2026-10-07","createdAt":"2026-10-07T07:45:00.000Z","updatedAt":"2026-10-07T07:45:00.000Z"},
+  {"id":"txn_0004","description":"Coffee with friends","amount":8.75,"category":"Entertainment","date":"2026-10-10","createdAt":"2026-10-10T16:00:00.000Z","updatedAt":"2026-10-10T16:00:00.000Z"},
+  {"id":"txn_0005","description":"Leap day pizza","amount":0.01,"category":"Food","date":"2024-02-29","createdAt":"2024-02-29T19:00:00.000Z","updatedAt":"2024-02-29T19:00:00.000Z"},
+  {"id":"txn_0006","description":"Tuition installment","amount":99999.99,"category":"Fees","date":"2025-12-31","createdAt":"2025-12-31T08:00:00.000Z","updatedAt":"2025-12-31T08:00:00.000Z"},
+  {"id":"txn_0007","description":"New Year tea tea order","amount":6.40,"category":"Food","date":"2026-01-01","createdAt":"2026-01-01T10:00:00.000Z","updatedAt":"2026-01-01T10:00:00.000Z"},
+  {"id":"txn_0008","description":"Free library card","amount":0,"category":"Books","date":"2025-09-01","createdAt":"2025-09-01T11:00:00.000Z","updatedAt":"2025-09-01T11:00:00.000Z"},
+  {"id":"txn_0009","description":"Notes (A+B) [printing] $2.50 / page?","amount":2.5,"category":"Other","date":"2026-10-12","createdAt":"2026-10-12T08:15:00.000Z","updatedAt":"2026-10-12T08:15:00.000Z"},
+  {"id":"txn_0010","description":"Cinema ticket - late show","amount":15,"category":"Entertainment","date":"2026-10-08","createdAt":"2026-10-08T21:00:00.000Z","updatedAt":"2026-10-08T21:00:00.000Z"},
+  {"id":"txn_0011","description":"Lab fee late payment","amount":120.05,"category":"Fees","date":"2026-10-06","createdAt":"2026-10-06T14:00:00.000Z","updatedAt":"2026-10-06T14:00:00.000Z"},
+  {"id":"txn_0012","description":"Taxi home after exam","amount":18.3,"category":"Transport","date":"2026-10-12","createdAt":"2026-10-12T18:00:00.000Z","updatedAt":"2026-10-12T18:00:00.000Z"}
+]
