@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Student Finance Tracker</title>
-  <meta name="description" content="Track student spending with regex search, budget caps and JSON import/export.">
+  <title>My Money Map</title>
+  <meta name="description" content="Track your spending with regex search, budget caps and JSON import/export.">
   <link rel="stylesheet" href="styles/main.css">
   <script type="module" src="scripts/main.js"></script>
 </head>
@@ -13,7 +13,7 @@
 
   <header class="site-header">
     <div class="wrap header-inner">
-      <p class="brand">Student<span>Finance</span>Tracker</p>
+      <p class="brand">My<span>Money</span>Map</p>
       <nav aria-label="Main">
         <ul class="nav-list">
           <li><a href="#dashboard" data-route="dashboard">Dashboard</a></li>
@@ -122,7 +122,7 @@
           <p id="e-desc" class="error" aria-live="polite"></p>
         </div>
         <div class="field">
-          <label for="f-amount">Amount (<span class="base-code">USD</span>)</label>
+          <label for="f-amount">Amount (<span class="base-code">RWF</span>)</label>
           <input id="f-amount" name="amount" type="text" inputmode="decimal" required aria-describedby="e-amount" autocomplete="off">
           <p id="e-amount" class="error" aria-live="polite"></p>
         </div>
@@ -151,7 +151,7 @@
       <form id="settings-form" class="card form-grid" novalidate>
         <h2 class="span">Budget &amp; currency</h2>
         <div class="field">
-          <label for="s-cap">Spending cap (<span class="base-code">USD</span>, 0 = off)</label>
+          <label for="s-cap">Spending cap (<span class="base-code">RWF</span>, 0 = off)</label>
           <input id="s-cap" type="text" inputmode="decimal" aria-describedby="e-cap">
           <p id="e-cap" class="error" aria-live="polite"></p>
         </div>
@@ -193,18 +193,18 @@
     <section id="about" class="view" aria-labelledby="about-h" hidden>
       <h1 id="about-h" tabindex="-1">About</h1>
       <div class="card prose">
-        <p>Student Finance Tracker helps you log spending, search it with regular expressions, and stay under a budget cap. Everything is stored in your browser (localStorage) – nothing leaves your device.</p>
+        <p>My Money Map helps you log spending, search it with regular expressions, and stay under a budget cap. Everything is stored in your browser (localStorage) – nothing leaves your device.</p>
         <h2>Contact</h2>
         <ul>
-          <li>GitHub: <a href="https://github.com/YOUR-USERNAME">github.com/YOUR-USERNAME</a></li>
-          <li>Email: <a href="mailto:gwiza.kansiime@gmail.com">gwiza.kansiime@gmail.com</a></li>
+          <li>GitHub: <a href="https://github.com/gwizatysha">github.com/gwizatysha</a></li>
+          <li>Email: <a href="mailto:g.kansiime@alustudent.com">g.kansiime@alustudent.com</a></li>
         </ul>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="wrap"><p>Student Finance Tracker · vanilla HTML, CSS &amp; JS</p></div>
+    <div class="wrap"><p>My Money Map · Made with HTML, CSS &amp; JS</p></div>
   </footer>
 
   <dialog id="confirm-dialog" aria-labelledby="confirm-title">
