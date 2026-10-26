@@ -1,8 +1,7 @@
 # Student Finance Tracker
 
 **Theme:** Student Finance Tracker (budgets, transactions, regex search)
-**Live site (GitHub Pages):** https://YOUR-USERNAME.github.io/YOUR-REPO/  <!-- TODO: replace after deploying -->
-**Demo video (unlisted):** TODO
+**Live site (GitHub Pages):** https://YOUR-USERNAME.github.io/finance-tracker**
 
 An accessible, responsive, framework-free app built with vanilla HTML, CSS and JavaScript (ES modules).
 
